@@ -126,37 +126,65 @@ residual will be far smaller.
 
 ## 5. Recommended topology
 
-The ZAPD-4 provides the reference channel. **Reflection configuration:**
+The whole test set follows from one rule (proved in §4): **a measurement is only valid as
+a ratio of two receivers captured in the same buffer.** So one receiver is spent on a
+permanent reference, and the other is the actual measurement input.
+
+- **RX1 is always the reference** `a₁` — a tap off the source, taken *before* the DUT. It
+  never moves.
+- **RX2 is the measured wave**, and selects what you are characterising. Move that one
+  cable between two positions:
+  - **position ①** = coupler `CPL` → the wave coming *back* from the DUT (`b₁`) → **S11**
+  - **position ②** = DUT far port → the wave *through* the DUT (`b₂`) → **S21**
+
+Everything else stays bolted down. That single moved connector is precisely what a
+commercial VNA does with an internal transfer switch; Phase 7 automates it (§6 Option B).
 
 ```
-                    ┌─────────────┐
- TX1 ──[8 dB]──────►│ S   ZAPD-4  │
-                    │             ├──► arm1 ──[10 dB]──► RX1   a₁  (reference)
-                    └──────┬──────┘
-                           │ arm2
-                    ┌──────▼──────┐
-                    │ OUT         │
-                    │   ZADC-10   │
-                    │   (REVERSED)│
-                    │ CPL ────────┼──[3 dB]──────────► RX2   b₁  (reflected)
-                    │ IN          │
-                    └──────┬──────┘
-                           ▼
-                      DUT (port 1)          →  S11 = (RX2/RX1) after SOL cal
+   ADALM-PLUTO
+  ┌───────────┐          ┌────────┐          ┌─────────────────┐
+  │           │          │        │          │ S               │
+  │    TX1 ●──┼─────────►│  8 dB  ├─────────►│      ZAPD-4     │
+  │           │          │        │          │     splitter    │
+  │           │          └────────┘          │  ①           ②  │
+  │           │                              └──┬───────────┬──┘
+  │           │                                 │           │
+  │           │       ┌────────┐   reference    │           │  source
+  │    RX1 ●◄─┼───────┤ 10 dB  │◄───────────────┘           │
+  │           │       └────────┘   a₁  (fixed)              ▼
+  │           │                                 ┌─────────────────────┐
+  │           │                                 │ OUT                 │
+  │           │                                 │   ZADC-10-63-S+     │
+  │           │                                 │  «« REVERSED »»     │
+  │           │                                 │ CPL             IN  │
+  │           │                                 └──┬──────────────┬───┘
+  │           │                                    │              │
+  │           │       ┌────────┐   measured        │              ▼
+  │    RX2 ●◄─┼───────┤  3 dB  │◄───────●──────────┘         DUT port 1
+  │           │       └────────┘        │  ①                      ┆
+  └───────────┘                         │                    ( 2-port DUT )
+                                        │                         ┆
+                                        └─────────────────── DUT port 2
+                                           ②
 ```
 
-**Transmission configuration** — move exactly one cable: RX2 goes from `CPL` to the DUT's
-far port, and `CPL` gets a 50 Ω termination:
+**Reversed** means the source enters the coupler at `OUT` and the DUT hangs off `IN`. That
+is the whole reflectometer trick — see §3 for why the stock orientation measures the wrong
+wave.
 
-```
- ... same source chain ...
-                    │ CPL ──[50 Ω]
-                    │ IN ──► DUT port 1 ──► DUT port 2 ──[3 dB]──► RX2   b₂
-                                                 →  S21 = (RX2/RX1) after through cal
-```
+### The two positions
 
-That single moved connector is what a real VNA does with an internal switch; Phase 7
-automates it.
+| | RX2 connects to | Terminate in 50 Ω | Ratio RX2/RX1 | Gives | Cal |
+|---|---|---|---|---|---|
+| **①** | coupler `CPL` | DUT port 2 | `b₁/a₁` | **S11** | SOL (short-open-load) |
+| **②** | DUT port 2 | coupler `CPL` | `b₂/a₁` | **S21** | through + isolation |
+
+Terminating the *unused* branch is not optional bookkeeping — in position ① an unterminated
+DUT port 2 changes the load the DUT sees and therefore changes S11, and in position ② an
+open `CPL` port degrades the coupler's directivity and its match toward the DUT.
+
+For a **one-port DUT** (your open / short / load standards, an antenna, a filter you only
+want return loss on) you only ever use position ①, and nothing needs terminating.
 
 ### Level budget (2.5–4 GHz, TX at ≈0 dBm at the connector)
 
