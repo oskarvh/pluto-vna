@@ -140,6 +140,10 @@ permanent reference, and the other is the actual measurement input.
 Everything else stays bolted down. That single moved connector is precisely what a
 commercial VNA does with an internal transfer switch; Phase 7 automates it (§6 Option B).
 
+There is **no signal junction anywhere** in what follows. `○` marks an open SMA connector
+and `┄┄` a loose cable end; the RX2 cable is a single cable that gets unscrewed from one
+connector and screwed onto another.
+
 ```
    ADALM-PLUTO
   ┌───────────┐          ┌────────┐          ┌─────────────────┐
@@ -148,36 +152,43 @@ commercial VNA does with an internal transfer switch; Phase 7 automates it (§6 
   │           │          │        │          │     splitter    │
   │           │          └────────┘          │  ①           ②  │
   │           │                              └──┬───────────┬──┘
-  │           │                                 │           │
-  │           │       ┌────────┐   reference    │           │  source
-  │    RX1 ●◄─┼───────┤ 10 dB  │◄───────────────┘           │
-  │           │       └────────┘   a₁  (fixed)              ▼
-  │           │                                 ┌─────────────────────┐
-  │           │                                 │ OUT                 │
-  │           │                                 │   ZADC-10-63-S+     │
-  │           │                                 │  «« REVERSED »»     │
-  │           │                                 │ CPL             IN  │
-  │           │                                 └──┬──────────────┬───┘
-  │           │                                    │              │
-  │           │       ┌────────┐   measured        │              ▼
-  │    RX2 ●◄─┼───────┤  3 dB  │◄───────●──────────┘         DUT port 1
-  │           │       └────────┘        │  ①                      ┆
-  └───────────┘                         │                    ( 2-port DUT )
-                                        │                         ┆
-                                        └─────────────────── DUT port 2
-                                           ②
+  │           │       ┌────────┐                │           │
+  │    RX1 ●◄─┼───────┤ 10 dB  │◄───────────────┘           │ source
+  │           │       └────────┘   reference a₁             ▼
+  │           │                    (never moves)  ┌─────────────────────┐
+  │           │                                   │ OUT                 │
+  │           │                                   │   ZADC-10-63-S+     │
+  │           │                                   │  «« REVERSED »»     │
+  │           │                                   │ CPL             IN  │
+  │           │                                   └──┬──────────────┬───┘
+  │           │       ┌────────┐                     ○ ①            ▼
+  │    RX2 ●◄─┼───────┤  3 dB  ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄               DUT port 1
+  │           │       └────────┘   loose end:                          ┆
+  └───────────┘                    screw onto ① or ②             ( 2-port DUT )
+                                                                       ┆
+                                                     ○ ② ┄┄┄┄┄┄┄ DUT port 2
 ```
 
 **Reversed** means the source enters the coupler at `OUT` and the DUT hangs off `IN`. That
 is the whole reflectometer trick — see §3 for why the stock orientation measures the wrong
 wave.
 
-### The two positions
+### Connection list
 
-| | RX2 connects to | Terminate in 50 Ω | Ratio RX2/RX1 | Gives | Cal |
-|---|---|---|---|---|---|
-| **①** | coupler `CPL` | DUT port 2 | `b₁/a₁` | **S11** | SOL (short-open-load) |
-| **②** | DUT port 2 | coupler `CPL` | `b₂/a₁` | **S21** | through + isolation |
+Every cable, explicitly. Six are permanent; number 7 is the only thing that ever moves.
+
+| # | From | To |
+|---|------|-----|
+| 1 | Pluto `TX1` | 8 dB pad → ZAPD-4 `S` |
+| 2 | ZAPD-4 `①` | 10 dB pad → Pluto `RX1` |
+| 3 | ZAPD-4 `②` | Coupler `OUT` |
+| 4 | Coupler `IN` | DUT port 1 |
+| **7** | 3 dB pad → Pluto `RX2` | **`①` = coupler `CPL`, or `②` = DUT port 2** |
+
+| Cable 7 on | Put 50 Ω on | Ratio RX2/RX1 | Gives | Cal |
+|---|---|---|---|---|
+| **① coupler `CPL`** | DUT port 2 | `b₁/a₁` | **S11** | SOL (short-open-load) |
+| **② DUT port 2** | coupler `CPL` | `b₂/a₁` | **S21** | through + isolation |
 
 Terminating the *unused* branch is not optional bookkeeping — in position ① an unterminated
 DUT port 2 changes the load the DUT sees and therefore changes S11, and in position ② an
@@ -185,6 +196,92 @@ open `CPL` port degrades the coupler's directivity and its match toward the DUT.
 
 For a **one-port DUT** (your open / short / load standards, an antenna, a filter you only
 want return loss on) you only ever use position ①, and nothing needs terminating.
+
+The cost of this single-coupler version: switching between S11 and S21 means unscrewing a
+cable *at the DUT itself*, which disturbs the thing you are measuring and changes its port-2
+termination. That is what a second coupler fixes.
+
+## 5b. With a second coupler
+
+A second coupler does **not** remove the need to select. Two receivers, one permanently
+spent on the reference, leaves exactly one input for the measured wave — so one signal at a
+time, regardless of how many couplers are in the box. Simultaneous S11+S21 needs a third
+receiver, which the Pluto does not have.
+
+What it does buy you is that **both DUT ports stay permanently connected and permanently
+terminated**. You stop touching the DUT between measurements and swap at the coupler `CPL`
+ports instead, well away from the reference plane. For repeatability and cal validity that
+is a large gain — disturbing the DUT connector between the S11 and S21 sweeps is one of the
+bigger error sources in the §5 arrangement.
+
+```
+   ADALM-PLUTO
+  ┌───────────┐        ┌────────┐        ┌─────────────────┐
+  │    TX1 ●──┼───────►│  8 dB  ├───────►│ S    ZAPD-4     │
+  │           │        └────────┘        │  ①           ②  │
+  │           │      ┌────────┐          └──┬───────────┬──┘
+  │    RX1 ●◄─┼──────┤ 10 dB  │◄────────────┘           │
+  │           │      └────────┘  reference a₁           ▼
+  │           │                            ┌─────────────────────┐
+  │           │                            │ OUT   COUPLER F     │
+  │           │                            │      (reversed)     │
+  │           │                            │ CPL             IN  ├──► DUT port 1
+  │           │                            └──┬──────────────────┘        ┆
+  │           │                               ○ ①                    ( 2-port DUT )
+  │           │      ┌────────┐                                           ┆
+  │    RX2 ●◄─┼──────┤  3 dB  ├┄┄┄┄ loose end: screw onto ① or ②      DUT port 2
+  │           │      └────────┘                                           │
+  └───────────┘                            ┌─────────────────────┐        │
+                                           │ OUT   COUPLER R     │        │
+                                  [50 Ω]◄──┤      (reversed)     │        │
+                                           │ CPL             IN  │◄───────┘
+                                           └──┬──────────────────┘
+                                              ○ ②
+```
+
+Coupler R is reversed too, so its `CPL` samples the wave *leaving* DUT port 2 — which is
+`b₂`, exactly what S21 needs — while its mainline runs into a 50 Ω load that becomes the
+DUT's permanent, well-matched port-2 termination.
+
+| # | From | To |
+|---|------|-----|
+| 1 | Pluto `TX1` | 8 dB pad → ZAPD-4 `S` |
+| 2 | ZAPD-4 `①` | 10 dB pad → Pluto `RX1` |
+| 3 | ZAPD-4 `②` | Coupler F `OUT` |
+| 4 | Coupler F `IN` | DUT port 1 |
+| 5 | DUT port 2 | Coupler R `IN` |
+| 6 | Coupler R `OUT` | 50 Ω termination |
+| **7** | 3 dB pad → Pluto `RX2` | **`①` = Coupler F `CPL`, or `②` = Coupler R `CPL`** |
+
+Put a 50 Ω termination on whichever `CPL` is idle — an open coupled port reflects back into
+the coupler and costs you directivity.
+
+Two further payoffs:
+
+- **This is the switch-ready arrangement.** Replace the cable-7 swap with one absorptive
+  SPDT and S11/S21 becomes automatic (Phase 7). Add a second SPDT on the source side and
+  you have all four parameters — §6 Option B is exactly this diagram with switches.
+- Nothing about the DUT connection differs between the S11 and S21 sweeps, so a single
+  physical setup covers both.
+
+### The alternative: skip the splitter instead
+
+With two couplers you can only cover two of the three taps (reference, port 1, port 2). The
+other way to spend them is to drop the ZAPD-4 and use a coupler in **forward** orientation
+as the reference tap:
+
+| | Reference tap | Port-1 tap | Port-2 tap | Band | DUT touched? |
+|---|---|---|---|---|---|
+| **§5b above** | ZAPD-4 | Coupler F | Coupler R | 2.5–4.2 GHz | no |
+| **alternative** | Coupler A (forward) | Coupler B | — (RX2 direct) | **2.5–6 GHz** | yes |
+
+The alternative widens the band to the full coupler range and loses ~3 dB less source power
+(0.6 dB mainline loss versus 3.5 dB through the splitter), but port 2 goes straight into
+RX2's mediocre match and you are back to unscrewing cables at the DUT.
+
+Given the project goal is two-port characterisation, **§5b is the better buy**. Three
+couplers eventually gives you both: reference, port 1 and port 2 all coupled, 2.5–6 GHz,
+no splitter.
 
 ### Level budget (2.5–4 GHz, TX at ≈0 dBm at the connector)
 
