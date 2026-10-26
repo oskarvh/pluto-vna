@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="640px" preserveAspectRatio="none" style="width:493px;height:640px;" version="1.1" viewBox="0 0 493 640" width="493px" zoomAndPan="magnify"><defs><filter height="300%" id="f8ge11ujnxhm" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[e7d29b2b1aab0925dda0283836c4316e]
+cluster pluto--><rect fill="#FFFFFF" filter="url(#f8ge11ujnxhm)" height="317" style="stroke: #000000; stroke-width: 1.5;" width="189" x="293" y="24"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="103" x="336" y="40.9659">ADALM-PLUTO</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="110" x="332.5" y="60.0339">(2R2T firmware)</text><!--MD5=[67015a9be9bf68ea595214a9cf2e4799]
+cluster split--><rect fill="#FFFFFF" filter="url(#f8ge11ujnxhm)" height="261" style="stroke: #000000; stroke-width: 1.5;" width="67" x="22" y="126"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="50" x="30.5" y="142.9659">ZAPD-4</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="50" x="30.5" y="162.0339">splitter</text><!--MD5=[2c7f4d039ddb683eef3d8666a64c20af]
+cluster cpl--><rect fill="#FFFFFF" filter="url(#f8ge11ujnxhm)" height="317" style="stroke: #000000; stroke-width: 1.5;" width="134" x="117" y="312"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="100" x="134" y="328.9659">ZADC-10-63-S+</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="87" x="140.5" y="348.0339">«REVERSED»</text><!--MD5=[a9a76c5a8b25b5e2d1512f80a188cba8]
+entity tx1--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="58.1358" style="stroke: #000000; stroke-width: 1.5;" width="157" x="309" y="174"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="24" x="375.5" y="198.9659">TX1</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="137" x="319" y="218.0339">tx_gain ≈ −8…−10 dB</text><!--MD5=[e9879472b8c2d4da3729ccc8de580a83]
+entity rx1--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="58.1358" style="stroke: #000000; stroke-width: 1.5;" width="102" x="336.5" y="267"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="25" x="375" y="291.9659">RX1</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="82" x="346.5" y="311.0339">reference a₁</text><!--MD5=[969f8e2d2bf3f1ade1673ca5fac97a8d]
+entity rx2--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="58.1358" style="stroke: #000000; stroke-width: 1.5;" width="98" x="338.5" y="81"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="25" x="375" y="105.9659">RX2</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="78" x="348.5" y="125.0339">reflected b₁</text><!--MD5=[7dd4671f919581788f5a17738f096a64]
+entity split_s--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="39.0679" style="stroke: #000000; stroke-width: 1.5;" width="28" x="41.5" y="183.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="8" x="51.5" y="208.4659">S</text><!--MD5=[67951310932f8055ed83d0292870c3c4]
+entity split_1--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="39.0679" style="stroke: #000000; stroke-width: 1.5;" width="35" x="38" y="257.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="15" x="48" y="282.4659">①</text><!--MD5=[e3bf431a8b724f8613559464e0a361db]
+entity split_2--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="39.0679" style="stroke: #000000; stroke-width: 1.5;" width="35" x="38" y="331.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="15" x="48" y="356.4659">②</text><!--MD5=[cd9b9ceb609accdaef85b865a043f4f1]
+entity cpl_out--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="58.1358" style="stroke: #000000; stroke-width: 1.5;" width="90" x="139" y="369"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="29" x="169.5" y="393.9659">OUT</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="70" x="149" y="413.0339">(source in)</text><!--MD5=[30043bed9008fcb83cd7d47c753e7931]
+entity cpl_in--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="58.1358" style="stroke: #000000; stroke-width: 1.5;" width="88" x="140" y="462"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="16" x="176" y="486.9659">IN</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="68" x="150" y="506.0339">(DUT port)</text><!--MD5=[7cc1e898c23c294e702ae785dc89b76b]
+entity cpl_cpl--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="58.1358" style="stroke: #000000; stroke-width: 1.5;" width="102" x="133" y="555"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="24" x="172" y="579.9659">CPL</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="82" x="143" y="599.0339">(samples b₁)</text><!--MD5=[492ae88be08506c70f7daa7c9bc6953e]
+entity padA--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="39.0679" style="stroke: #000000; stroke-width: 1.5;" width="89" x="139.5" y="256.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="69" x="149.5" y="281.4659">8 dB atten</text><!--MD5=[4e8b507be824f178ca1bd73f12380720]
+entity padB--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="39.0679" style="stroke: #000000; stroke-width: 1.5;" width="89" x="139.5" y="100.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="69" x="149.5" y="125.4659">8 dB atten</text><!--MD5=[765c468e9688b1b91d33e9893e351644]
+entity dut--><rect fill="#FEFECE" filter="url(#f8ge11ujnxhm)" height="77.2038" style="stroke: #000000; stroke-width: 1.5;" width="185" x="295" y="452.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="93" x="341" y="477.4659">One-port DUT</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="92" x="341.5" y="496.5339">one at a time:</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="165" x="305" y="515.6018">50 Ω load | short | open</text><!--MD5=[438270dc38b7be9c4c6eb0836eabed09]
+link tx1 to split_s--><path d="M308.9,203 C231.88,203 119.16,203 75.11,203 " fill="none" id="tx1-&gt;split_s" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="69.85,203,78.85,207,74.85,203,78.85,199,69.85,203" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[243c6686def1248804f126d3e2620bc4]
+link split_1 to padA--><path d="M73.04,276.87 C88.54,276.75 112.49,276.56 134.09,276.39 " fill="none" id="split_1-&gt;padA" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="139.24,276.35,130.2173,272.4015,134.2401,276.3786,130.263,280.4014,139.24,276.35" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[700a734998b11e30912177b136a15342]
+link padA to rx1--><path d="M228.72,280.34 C258.83,283.33 299.06,287.32 331.36,290.53 " fill="none" id="padA-&gt;rx1" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="336.48,291.03,327.9116,286.1738,331.5037,290.5438,327.1337,294.1359,336.48,291.03" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[5add8aeeb7f5f518a9c6dcf6dee9fc99]
+link split_2 to cpl_out--><path d="M73.04,357.14 C88.54,362.9 112.5,371.81 134.11,379.83 " fill="none" id="split_2-&gt;cpl_out" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="138.96,381.64,131.9191,374.7534,134.2737,379.8969,129.1301,382.2515,138.96,381.64" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[bd7ddd815e79723fa1509a29340df926]
+link cpl_in to dut--><path d="M228.23,491 C246.32,491 268.13,491 289.71,491 " fill="none" id="cpl_in-&gt;dut" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="294.89,491,285.89,487,289.89,491,285.89,495,294.89,491" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[57252cfa79d16ce92d6780aaddb8b085]
+link cpl_cpl to padB--><path d="M132.96,559.39 C124.08,553.36 115.59,546.23 109,538 C103.86,531.58 104.35,528.61 103,520.5 C97.05,484.77 97.05,230.23 103,194.5 C104.35,186.39 104.19,183.66 109,177 C118.64,163.66 132.29,152 145.3,142.76 " fill="none" id="cpl_cpl-&gt;padB" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="149.69,139.72,140.0161,141.5681,145.5832,142.572,144.5793,148.139,149.69,139.72" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3d86661ec4e1e80c41da5096e5dcd32e]
+link padB to rx2--><path d="M228.72,117.83 C259.38,116.31 300.53,114.27 333.12,112.65 " fill="none" id="padB-&gt;rx2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="338.28,112.39,329.0965,108.8313,333.2859,112.6326,329.4847,116.8219,338.28,112.39" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[b6d4c0b0e544731dfd5822331e83b1ba]
+@startuml initial_setup
+!pragma layout smetana
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+left to right direction
+
+rectangle "ADALM-PLUTO\n(2R2T firmware)" as pluto {
+  rectangle "TX1\ntx_gain ≈ −8…−10 dB" as tx1
+  rectangle "RX1\nreference a₁" as rx1
+  rectangle "RX2\nreflected b₁" as rx2
+}
+
+rectangle "ZAPD-4\nsplitter" as split {
+  rectangle "S" as split_s
+  rectangle "①" as split_1
+  rectangle "②" as split_2
+}
+
+rectangle "ZADC-10-63-S+\n«REVERSED»" as cpl {
+  rectangle "OUT\n(source in)" as cpl_out
+  rectangle "IN\n(DUT port)" as cpl_in
+  rectangle "CPL\n(samples b₁)" as cpl_cpl
+}
+
+rectangle "8 dB atten" as padA
+rectangle "8 dB atten" as padB
+
+rectangle "One-port DUT\none at a time:\n50 Ω load | short | open" as dut
+
+tx1 - -> split_s
+split_1 - -> padA
+padA - -> rx1
+split_2 - -> cpl_out
+cpl_in - -> dut
+cpl_cpl - -> padB
+padB - -> rx2
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 02:22:07 PST 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 21.0.12.1+1-1-24.04.4-Ubuntu
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

@@ -12,7 +12,7 @@ log-magnitude, phase and a Smith chart over a swept frequency range.
 |-------|------------------|-------|
 | 0. Bring-up | Pluto in 2R2T mode, host toolchain, coherent 2-channel capture | ☑ **done** |
 | 1. Phase gate | Experiment: is TX↔RX phase repeatable across LO retunes? Picks the RF topology | ☑ **done** — reference channel required |
-| 2. Sweep engine | Stepped-frequency CW sweep → raw complex ratio vs frequency (headless CLI) | ☐ not started |
+| 2. Sweep engine | Stepped-frequency CW sweep → raw complex ratio vs frequency (headless CLI) | ☑ **done** — 64 ms/point |
 | 3. Calibration | SOL 1-port cal → corrected S11; through/isolation cal → S21 | ☐ not started |
 | 4. GUI | Live sweep, logmag/phase/VSWR traces, Smith chart, markers, cal wizard | ☐ not started |
 | 5. Storage | Touchstone `.s1p`/`.s2p` export, save/load cal states | ☐ not started |
@@ -24,6 +24,12 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 ## Todo
 
 **Hardware changes needed — on you, before Phase 3** (details in [docs/hardware.md](docs/hardware.md) §5)
+
+![Initial test-set wiring](scratch/initial_setup.svg)
+
+*Initial two-pad wiring. Source and regeneration commands in
+[scratch/initial_setup.md](scratch/initial_setup.md).*
+
 - [ ] **Reverse the coupler** — feed `OUT`, DUT on `IN`. As wired it measures the forward
       wave, not the reflected one
 - [ ] Insert the ZAPD-4 to create the reference channel into RX1 (Phase 1 proved this is
@@ -41,9 +47,10 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 - [x] Measure phase repeatability of a fixed path across repeated LO retunes
 - [x] Decide topology → **reference channel required**, ZAPD-4 goes in the path
 
-**Phase 2 — Sweep engine**
-- [ ] Single-point measurement primitive (retune → settle → capture → coherent DFT → ratio)
-- [ ] Sweep loop, averaging, IF bandwidth control, uncalibrated CLI sweep + CSV out
+**Phase 2 — Sweep engine** ☑
+- [x] Single-point measurement primitive (retune → settle → capture → coherent DFT → ratio)
+- [x] Sweep loop, averaging, IF bandwidth control, uncalibrated CLI sweep + CSV out
+- [x] Mock backend (known error box, random LO phase) + tests
 
 **Phase 3 — Calibration**
 - [ ] Cal-kit definition file (open/short/load with offset delay)
@@ -77,6 +84,9 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 
 ```sh
 .venv/bin/python tools/bringup.py info | spectrum | phasegate
+.venv/bin/python -m plutovna.cli sweep --points 201 --out data/load.csv   # raw sweep
+.venv/bin/python -m plutovna.cli sweep --mock short                       # no hardware
+.venv/bin/python -m pytest -q tests
 ```
 
 ## Key findings so far
