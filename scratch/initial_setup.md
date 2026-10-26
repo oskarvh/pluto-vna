@@ -175,3 +175,114 @@ The short measured at `rx_gain=20` and at `rx_gain=15` differs by up to 0.45 dB 
 The two receivers don't track each other perfectly across gain settings. So a
 calibration is only valid at the RX gain it was taken with, which is why every CSV
 records the settings.
+
+## Repeatability of the load sweep
+
+With the load attached, taken at 22:22–22:25. Same settings as above (`rx_gain=15`):
+
+```shell
+# 1. untouched: 5 back-to-back sweeps
+for i in 1 2 3 4 5; do
+  .venv/bin/python -m plutovna.cli sweep --rx-gain 15 -q --out data/load_rep$i.csv
+done
+# 2. reseated: unscrew and reattach the load before each of 3 sweeps
+for i in 1 2 3; do
+  read -p "Unscrew and reattach the load, press enter"
+  .venv/bin/python -m plutovna.cli sweep --rx-gain 15 -q --out data/load_reseat$i.csv
+done
+# 3. zoom on the dip: 1 MHz steps, 4 averages
+.venv/bin/python -m plutovna.cli sweep --rx-gain 15 -q --start 4.0e9 --stop 4.1e9 \
+  --points 101 --avg 4 --out data/load_zoom.csv
+```
+
+Regenerate the plots with `.venv/bin/python tools/plot_repeats.py`.
+
+All spreads below are **complex** differences, expressed relative to |short| (≈ 0.18).
+That reads as "how far below a full reflection is the error", which is what limits a
+calibrated measurement. Comparing dB values directly would mislead near the dip, where a
+tiny complex change swings the dB reading by 20 dB.
+
+| Comparison | Median | Worst |
+|---|---|---|
+| Untouched repeats (std of 5) | −56.5 dB | −39.2 dB @ 2.54 GHz |
+| Reseated (std of 3) | −45.1 dB | −34.0 dB |
+| Original `load.csv`, 9 min earlier, vs mean of repeats | −51.3 dB | −36.7 dB @ 2.52 GHz |
+| Zoom: point-to-point jitter about a smooth fit | −49.0 dB | |
+| Zoom: within-point noise (standard error of 4 captures) | −80 dB | |
+
+![Repeatability spread](img/repeat_spread.png)
+
+### The dip is real and harmless
+
+![The dip](img/repeat_dip.png)
+
+![The dip in the complex plane](img/repeat_dip_complex.png)
+
+- Every one of the 9 sweeps puts the minimum at the **same frequency, 4.0555 GHz**. The
+  zoom puts it at 4.054 GHz.
+- In the complex plane the load's trace is a smooth arc that happens to pass within
+  ≈ 0.001 of the origin. The leakage `e₀₀` and the load's own small reflection are equal
+  and opposite there.
+- The *depth* varies between −50 and −75 dB from sweep to sweep. That is only the
+  ≈ 0.001 jitter below, landing slightly closer to or further from zero.
+
+The calibration subtracts `e₀₀` as a complex number, so a near-zero raw value is not a
+problem.
+
+### The real finding: jitter per retune, not noise
+
+In the zoom sweep, the 4 captures at each frequency agree to a standard error of
+1.8 × 10⁻⁵. But neighbouring frequencies scatter about a smooth curve by 6.4 × 10⁻⁴ rms,
+**35× more**. So the ratio picks up a small random error every time the LO is retuned,
+and it stays fixed until the next retune. That means:
+
+- **`--avg` doesn't help with it.** It averages captures without retuning.
+- **The jitter, not receiver noise, sets the floor** of about −49 to −56 dB relative to a
+  full reflection.
+- It's worst at the band edges (−40 dB at 2.5–2.6 GHz and 4.0–4.2 GHz). That's where the
+  untouched spread rises in the plot above.
+
+This matches the residual 1–3.6° ratio scatter in the Phase 1 phase-gate experiment
+(`docs/hardware.md` §4). That was blamed on low RX2 SNR at the time, but SNR is now
+≥ 78 dB and the scatter is still there.
+
+#### Additive, not multiplicative
+
+Is the jitter a fixed-size error added to the ratio, or a gain/phase step that scales
+with it? The same zoom sweep with the short attached (22:30) answers it:
+
+```shell
+.venv/bin/python -m plutovna.cli sweep --rx-gain 15 -q --start 4.0e9 --stop 4.1e9 \
+  --points 101 --avg 4 --out data/short_zoom.csv
+```
+
+| Zoom, 4.0–4.1 GHz | Load | Short |
+|---|---|---|
+| Median \|ratio\| | 0.0103 | 0.2113 (20× larger) |
+| Point-to-point jitter, rms | 6.4 × 10⁻⁴ | 5.5 × 10⁻⁴ |
+| … relative to \|short\| | −49.0 dB | −50.2 dB |
+| … split radial / tangential | 4.5 / 4.6 × 10⁻⁴ | 3.8 / 4.0 × 10⁻⁴ |
+| … as gain/phase of its own signal | 0.83 dB / 5.8° | **0.016 dB / 0.11°** |
+| Within-point standard error (4 captures) | 1.8 × 10⁻⁵ | 2.8 × 10⁻⁵ |
+
+The signal is 20× larger on the short, but the jitter is the same size. So it's
+**additive**: a small vector of ≈ 6 × 10⁻⁴ with a random phase per retune (the radial
+and tangential parts are equal), added to whatever is being measured. Any
+multiplicative part is below 0.016 dB / 0.11°, so tracking is excellent.
+
+What it means for calibration:
+
+- It acts like a random directivity error of about **−50 dB relative to a full
+  reflection** near 4 GHz, and about −56 dB mid-band. That's the floor for measuring
+  return loss after calibration, the same order as the −45 dB reseat error. Both are
+  fine for a hobby VNA.
+- Strong reflections (open, short, mismatched DUTs) are barely affected. Only
+  well-matched DUTs (return loss > 40 dB) will look noisy.
+- Averaging over retunes (sweeping several times, or retuning between averages) would
+  cut it by √K. Averaging captures at a fixed tune does nothing.
+
+### Reseating
+
+A reseat costs about −45 dB, flat across the band. This is the error each standard swap
+adds during calibration. It's about 10 dB worse than the untouched repeats in mid-band,
+so a torque wrench (or at least a consistent hand tightness) is worth it.
