@@ -23,19 +23,19 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 
 ## Todo
 
-**Hardware changes needed — on you, before Phase 3** (details in [docs/hardware.md](docs/hardware.md) §5)
+**Hardware — one-port test set** (details in [docs/hardware.md](docs/hardware.md) §5)
 
-![Initial test-set wiring](scratch/initial_setup.svg)
+![One-port test-set wiring](scratch/initial_setup.svg)
 
-*Initial two-pad wiring. Source and regeneration commands in
+*One-port (S11) wiring as built. Source, regeneration commands and measurements in
 [scratch/initial_setup.md](scratch/initial_setup.md).*
 
-- [ ] **Reverse the coupler** — feed `OUT`, DUT on `IN`. As wired it measures the forward
-      wave, not the reflected one
-- [ ] Insert the ZAPD-4 to create the reference channel into RX1 (Phase 1 proved this is
-      mandatory, not optional)
-- [ ] Add pads: 10 dB on the reference arm, 3 dB at RX2, plus a 50 Ω termination
+- [x] **Reverse the coupler** — feed `OUT`, DUT on `IN`
+- [x] Insert the ZAPD-4 to create the reference channel into RX1
+- [x] Pads: 8 dB on each RX port; TX level set in software (`tx_gain`) instead of a pad
 - [ ] Dress the cables so nothing flexes between calibration and measurement
+- [ ] Optional: a third pad between TX1 and the splitter, to improve the raw source
+      match (currently as poor as −7.5 dB)
 
 **Phase 0 — Bring-up** ☑
 - [x] Enable 2R2T on the Pluto (`fw_setenv`) — RX2 now exists; range also opened to 70 MHz–6 GHz

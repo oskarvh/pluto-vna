@@ -52,6 +52,7 @@ cmake --build /tmp/libiio/build -j"$(nproc)"
 cmake --install /tmp/libiio/build
 
 .venv/bin/pip install pylibiio pyadi-iio numpy scipy scikit-rf PyQt6 pyqtgraph
+.venv/bin/pip install pytest matplotlib     # tests, and the plotting scripts in tools/
 ```
 
 `pylibiio` is a pure-Python ctypes binding — it needs to `dlopen("libiio.so.0")`, which
@@ -78,6 +79,8 @@ resolves to the already-loaded handle.)
 | scikit-rf | 2.0.1 |
 | PyQt6 / Qt | 6.11.0 |
 | pyqtgraph | 0.14.0 |
+| pytest | 9.1.1 |
+| matplotlib | 3.11.2 |
 
 ## 3. Verify
 

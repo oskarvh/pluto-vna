@@ -126,6 +126,11 @@ residual will be far smaller.
 
 ## 5. Recommended topology
 
+> **As built:** the one-port version of this test set uses only two pads, 8 dB on each RX
+> port, with the TX pad replaced by the Pluto's TX attenuation (`tx_gain` ≈ −10 dB). The
+> wiring diagram, levels and measured results are in
+> [scratch/initial_setup.md](../scratch/initial_setup.md).
+
 The whole test set follows from one rule (proved in §4): **a measurement is only valid as
 a ratio of two receivers captured in the same buffer.** So one receiver is spent on a
 permanent reference, and the other is the actual measurement input.
