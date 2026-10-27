@@ -1,0 +1,23 @@
+# Ideal standards: open Γ = +1, short Γ = −1, load Γ = 0 at the reference plane.
+#
+# Fill in measured or vendor coefficients when you have them. Units follow the usual
+# vendor cal-kit convention:
+#   delay_ps         one-way offset delay [ps]
+#   loss_gohm_per_s  offset loss at 1 GHz [GΩ/s]
+#   z0               offset impedance [Ω]
+#   c0..c3           open fringing capacitance [1e-15 F, 1e-27 F/Hz, 1e-36 F/Hz², 1e-45 F/Hz³]
+#   l0..l3           short inductance          [1e-12 H, 1e-24 H/Hz, 1e-33 H/Hz², 1e-42 H/Hz³]
+#   r                load resistance [Ω]
+
+name = "ideal"
+
+[open]
+delay_ps = 0.0
+c0 = 0.0
+
+[short]
+delay_ps = 0.0
+l0 = 0.0
+
+[load]
+r = 50.0

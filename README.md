@@ -13,7 +13,7 @@ log-magnitude, phase and a Smith chart over a swept frequency range.
 | 0. Bring-up | Pluto in 2R2T mode, host toolchain, coherent 2-channel capture | ☑ **done** |
 | 1. Phase gate | Experiment: is TX↔RX phase repeatable across LO retunes? Picks the RF topology | ☑ **done** — reference channel required |
 | 2. Sweep engine | Stepped-frequency CW sweep → raw complex ratio vs frequency (headless CLI) | ☑ **done** — 64 ms/point |
-| 3. Calibration | SOL 1-port cal → corrected S11; through/isolation cal → S21 | ☐ not started |
+| 3. Calibration | SOL 1-port cal → corrected S11; through/isolation cal → S21 | ◐ in progress — 1-port solver done |
 | 4. GUI | Live sweep, logmag/phase/VSWR traces, Smith chart, markers, cal wizard | ☐ not started |
 | 5. Storage | Touchstone `.s1p`/`.s2p` export, save/load cal states | ☐ not started |
 | 6. Full 2-port | S22/S12 by manual DUT reversal, full SOLT correction | ☐ not started |
@@ -52,9 +52,10 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 - [x] Sweep loop, averaging, IF bandwidth control, uncalibrated CLI sweep + CSV out
 - [x] Mock backend (known error box, random LO phase) + tests
 
-**Phase 3 — Calibration**
-- [ ] Cal-kit definition file (open/short/load with offset delay)
-- [ ] 3-term SOL solver, applied to live sweeps
+**Phase 3 — Calibration** ◐
+- [x] Cal-kit definition file (open/short/load with offset delay) — `calkits/ideal.toml`
+- [x] 3-term SOL solver + settings-locked cal state, applied to saved sweeps (`cli cal` / `cli correct`)
+- [ ] Apply the cal to live sweeps
 - [ ] Through normalisation + isolation cal for S21
 - [ ] Verify: known-good DUT, cal stability over time
 
@@ -86,6 +87,8 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 .venv/bin/python tools/bringup.py info | spectrum | phasegate
 .venv/bin/python -m plutovna.cli sweep --points 201 --out data/load.csv   # raw sweep
 .venv/bin/python -m plutovna.cli sweep --mock short                       # no hardware
+.venv/bin/python -m plutovna.cli cal                    # data/{open,short,load}.csv → data/cal.npz
+.venv/bin/python -m plutovna.cli correct data/dut.csv --out data/dut_gamma.csv
 .venv/bin/python -m pytest -q tests
 ```
 
